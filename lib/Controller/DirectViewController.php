@@ -27,13 +27,13 @@ use OCA\Richdocuments\Db\DirectMapper;
 use OCA\Richdocuments\TokenManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Db\DoesNotExistException;
-use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
-use OCP\AppFramework\Http\JSONResponse;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
 use OCP\IConfig;
+use OCP\ILogger;
 use OCP\IRequest;
 
 class DirectViewController extends Controller {
@@ -52,13 +52,17 @@ class DirectViewController extends Controller {
 	/** @var AppConfig */
 	private $appConfig;
 
+	/** @var ILogger */
+	private $logger;
+
 	public function __construct($appName,
 								IRequest $request,
 								IRootFolder $rootFolder,
 								TokenManager $tokenManager,
 								DirectMapper $directMapper,
 								IConfig $config,
-								AppConfig $appConfig) {
+								AppConfig $appConfig,
+								ILogger $logger) {
 		parent::__construct($appName, $request);
 
 		$this->rootFolder = $rootFolder;
@@ -66,6 +70,7 @@ class DirectViewController extends Controller {
 		$this->directMapper = $directMapper;
 		$this->config = $config;
 		$this->appConfig = $appConfig;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -79,8 +84,7 @@ class DirectViewController extends Controller {
 		try {
 			$direct = $this->directMapper->getByToken($token);
 		} catch (DoesNotExistException $e) {
-			//TODO show 404
-			return new JSONResponse([], Http::STATUS_NOT_FOUND);
+			return new NotFoundResponse();
 		}
 
 		// Delete the token. They are for 1 time use only
@@ -112,7 +116,8 @@ class DirectViewController extends Controller {
 			$response->setContentSecurityPolicy($policy);
 			return $response;
 		} catch (\Exception $e) {
-			return new JSONResponse([], Http::STATUS_BAD_REQUEST);
+			$this->logger->logException($e, ['message' => 'error when obtaining direct link', 'app' => 'richdocuments']);
+			return new NotFoundResponse();
 		}
 
 	}
