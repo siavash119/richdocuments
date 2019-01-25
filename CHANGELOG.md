@@ -1,3 +1,11 @@
+**3.2.0**
+- Added: File actions menu in the header
+- Added: Handle UI_CreateFile post message
+- Added: Use shipped templates also for old template creation mode
+- Fixed: Pass proper response to registerFilesMenu
+- Fixed: Translation for Insert images
+- Fixed: Remove language settings from templates
+
 **3.1.1
 - Fixed: Capabilities fetching when no url is entered
 - Fixed: Capabilities timeout of 5 seconds
