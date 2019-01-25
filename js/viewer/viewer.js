@@ -389,7 +389,9 @@ $(document).ready(function() {
 				oc_capabilities = data.ocs.data.capabilities;
 			})
 		}
-		$.when(getSettings, getCapabilities).done(odfViewer.registerFilesMenu)
+		$.when(getSettings, getCapabilities).done(function(settings, capabilities) {
+			odfViewer.registerFilesMenu(settings[0]);
+		})
 
 	}
 });
