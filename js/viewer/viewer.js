@@ -167,6 +167,7 @@ var odfViewer = {
 		$('#app-navigation').removeClass('hidden');
 		$('.richdocuments-sharing').remove();
 		$('#richdocuments-avatars').remove();
+		$('#richdocuments-actions').remove();
 		$('.searchbox').show();
 
 		OC.Util.History.replaceState();
