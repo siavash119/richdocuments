@@ -5,6 +5,7 @@
 - Fixed: Pass proper response to registerFilesMenu
 - Fixed: Translation for Insert images
 - Fixed: Remove language settings from templates
+- Fixed: Better wording for the image file picker
 
 **3.1.1**
 - Fixed: Capabilities fetching when no url is entered
