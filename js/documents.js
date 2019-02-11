@@ -419,8 +419,8 @@ var documentsMain = {
 			this.loadRevViewerContainer();
 			// Load current revision
 			// TODO: add entry to versions
-			var fileId = documentsMain.fileId + '_' + 0;
-			var title = documentsMain.fileName + ' - ' + 0;
+			var fileId = documentsMain.fileId;
+			var title = documentsMain.fileName;
 			documentsMain.UI.showViewer(
 				fileId, title
 			);
@@ -443,7 +443,9 @@ var documentsMain = {
 
 		addCurrentVersion: function() {
 			var preview = OC.MimeType.getIconUrl(parent.OCA.Files.App.fileList._currentFileModel.get('mimetype'));
-			parent.$('#versionsTabView').prepend('<ul id="currentVersion"><li data-revision="0" class="active"><div><div class="preview-container"><img src="' + preview + '" width="44" /></div><div class="version-container">\n' +
+			parent.$('#versionsTabView').prepend('<ul id="currentVersion"><li data-revision="0"><div><div class="preview-container"><img src="' + preview + '" width="44" /></div><div class="version-container">\n' +
+				'<div><a class="downloadVersion">' + t('richdocuments', 'Last saved version') + '</a></div></div></li></ul>');
+			parent.$('#versionsTabView').prepend('<ul id="currentVersion"><li data-revision="" class="active"><div><div class="preview-container"><img src="' + preview + '" width="44" /></div><div class="version-container">\n' +
 				'<div><a class="downloadVersion">' + t('richdocuments', 'Current version') + '</a></div></div></li></ul>');
 		},
 
@@ -455,8 +457,12 @@ var documentsMain = {
 				element = e.currentTarget.parentElement.parentElement.parentElement.parentElement;
 			}
 			var version = element.dataset.revision;
-			var fileId = documentsMain.fileId + '_' + version;
-			var title = documentsMain.fileName + ' - ' + version;
+			var fileId = documentsMain.fileId;
+			var title = documentsMain.fileName;
+			if (version !== '') {
+				fileId += '_' + version;
+				title += '_' + version;
+			}
 			documentsMain.UI.showViewer(
 				fileId, title
 			);
